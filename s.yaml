@@ -1,0 +1,24 @@
+edition: 1.0.0          #  命令行YAML规范版本，遵循语义化版本（Semantic Versioning）规范
+name: sae-app           #  项目名称
+access: publish_access  #  秘钥别名
+
+services:
+  sae-test: #  服务名称
+    component:  devsapp/sae
+    props:
+      Region: cn-beijing
+      Namespace:
+        NamespaceId: cn-beijing:test
+        NamespaceName: name
+        NamespaceDescription: namespace desc
+      Application:
+        AppName: test
+        AppDescription: This is a test description.
+        Code:
+          Image: ${evn(DOCKER_IMAGE)}
+        Cpu: 500
+        Memory: 1024
+        Replicas: 1
+        AutoConfig: true
+      SLB:
+        Internet: [{"port":80,"targetPort":8080,"protocol":"TCP"}]
