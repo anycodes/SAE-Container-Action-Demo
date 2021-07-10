@@ -9,13 +9,13 @@ services:
       Region: cn-beijing
       Namespace:
         NamespaceId: cn-beijing:test
-        NamespaceName: name
+        NamespaceName: serverless-devs
         NamespaceDescription: namespace desc
       Application:
-        AppName: test
+        AppName: serverless-devs-app
         AppDescription: This is a test description.
         Code:
-          Image: ${evn(DOCKER_IMAGE)}
+          Image: ${env(DOCKER_IMAGE)}
         Cpu: 500
         Memory: 1024
         Replicas: 1

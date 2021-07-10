@@ -1,8 +1,8 @@
-name: Build and Deploy to ACK
+name: Build and Deploy to SAE
 
 on:
-  release:
-    types: [created]
+  push:
+    branches: [ master ]
 
 # Environment variables available to all jobs and steps in this workflow.
 env:
@@ -35,7 +35,6 @@ jobs:
         run: |
           docker build --tag "$REGISTRY/$NAMESPACE/$IMAGE:$TAG" .
           docker push "$REGISTRY/$NAMESPACE/$IMAGE:$TAG"
-
       # 1.3 et Docker Image to Env
       - name: Set Docker Image to Env
         run: echo "DOCKER_IMAGE=$REGISTRY/$NAMESPACE/$IMAGE:$TAG" >> $GITHUB_ENV
@@ -47,13 +46,13 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-        run: npm install -g @serverless-devs/s
+      - run: npm install -g @serverless-devs/s
 
 
-      # 2.1 Config Serverless Devs
+      # 2.2 Config Serverless Devs
       - name: Config Serverless Devs
         run: s config add --AccountID ${{secrets.Account_ID}} --AccessKeyID ${{secrets.ACCESS_KEY_ID}} --AccessKeySecret ${{secrets.ACCESS_KEY_SECRET}} -a publish_access
 
-      # 2.2 Deploy to SAE
+      # 2.3 Deploy to SAE
       - name: Deploy to SAE
         run: s deploy
